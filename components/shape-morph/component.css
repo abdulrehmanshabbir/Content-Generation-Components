@@ -1,0 +1,19 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   SHAPE MORPHING · palette
+   Three colours. The engine derives its tints from them in CSS; VIS.sync()
+   derives the canvas ramps from the same three in JS.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --ground: #ecedf3;   /* soft pale blue-grey — the paper */
+  --ink:    #20242e;   /* soft near-black     — type, outlines, points */
+  --accent: #9aa7e6;   /* soft periwinkle     — the shape itself, highlights */
+}
+
+/* This component draws vectors rather than text blocks, so it adds a little
+   of its own styling on top of the engine primitives. */
+.sm-shape   { fill: var(--accent); stroke: none; }
+.sm-outline { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linejoin: round; }
+.sm-dot     { fill: var(--ink); }
+.sm-start   { fill: var(--accent); stroke: var(--ink); stroke-width: 4; }
+.sm-travel  { stroke: var(--ink); stroke-width: 2.5; opacity: .28; }
+.sm-track   { stroke: var(--ink); stroke-width: 3; opacity: .22; stroke-linecap: round; }

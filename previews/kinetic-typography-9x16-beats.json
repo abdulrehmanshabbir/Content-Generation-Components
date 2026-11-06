@@ -1,0 +1,58 @@
+{
+  "component": "kinetic-typography",
+  "fps": 30,
+  "beats": [
+    {
+      "at": 1.1,
+      "w": "YOU"
+    },
+    {
+      "at": 1.33,
+      "w": "DON'T"
+    },
+    {
+      "at": 1.56,
+      "w": "NEED"
+    },
+    {
+      "at": 1.8,
+      "w": "MORE"
+    },
+    {
+      "at": 2.12,
+      "w": "TIME"
+    },
+    {
+      "at": 3.86,
+      "w": "DECIDE"
+    },
+    {
+      "at": 6.26,
+      "w": "MOMENTUM"
+    },
+    {
+      "at": 6.52,
+      "w": "FOCUS"
+    },
+    {
+      "at": 6.76,
+      "w": "REPS"
+    },
+    {
+      "at": 8.18,
+      "w": "START"
+    },
+    {
+      "at": 8.42,
+      "w": "BEFORE"
+    },
+    {
+      "at": 8.66,
+      "w": "YOU'RE READY"
+    },
+    {
+      "at": 10.78,
+      "w": "HYPERFRAMES"
+    }
+  ]
+}

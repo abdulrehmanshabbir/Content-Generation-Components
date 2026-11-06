@@ -1,0 +1,196 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   STAGE · the shell every component renders into.
+
+   COLOUR CONTRACT — a component sets three tokens in its own component.css:
+
+     --ground   the paper everything sits on
+     --ink      all type; never pure black
+     --accent   highlight blocks, rules, fills; never small type
+
+   Everything below derives from those three, so overriding them re-skins the
+   whole stage — and VIS.sync() reads the same three for the canvas footage.
+   The values here are defaults, used when a component sets none.
+
+   Scenes are authored in a 1080×1920 design space: sizes are
+   `calc(Npx * var(--u))`, where --u is the design unit and --k the
+   fit-to-container scale. Both are set by the player.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --ground: #e8ecf2;
+  --ink:    #212a38;
+  --accent: #f0c978;
+
+  /* tints — rgba fallback first, then color-mix so an override propagates */
+  --ink-70:    rgba(33, 42, 56, .70);
+  --ink-70:    color-mix(in srgb, var(--ink) 70%, transparent);
+  --ink-45:    rgba(33, 42, 56, .45);
+  --ink-45:    color-mix(in srgb, var(--ink) 45%, transparent);
+  --ink-26:    rgba(33, 42, 56, .26);
+  --ink-26:    color-mix(in srgb, var(--ink) 26%, transparent);
+  --ink-14:    rgba(33, 42, 56, .14);
+  --ink-14:    color-mix(in srgb, var(--ink) 14%, transparent);
+  --page:      #d3dae4;   /* behind the frame */
+  --page:      color-mix(in srgb, var(--ground) 86%, var(--ink));
+  --bloom:     #f2f5f9;   /* the cut flash: a lighter tint of ground */
+  --bloom:     color-mix(in srgb, var(--ground) 72%, #fff);
+
+  --u: 1;
+  --k: 1;
+  --font-display: 'Inter Display Black','Inter Display','Inter Tight',Inter,
+                  -apple-system,'Segoe UI',system-ui,sans-serif;
+  --font-mono: 'JetBrains Mono','SFMono-Regular',ui-monospace,monospace;
+  color-scheme: light;
+}
+
+*,*::before,*::after { box-sizing: border-box; }
+html,body { height: 100%; margin: 0; }
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-display);
+  display: grid; place-items: center;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── frame + stage ─────────────────────────────────────────────────────── */
+.hf-fit { position: relative; display: grid; place-items: center; }
+.hf-stage {
+  /* the stage keeps its design pixels; .hf-fit carries the on-screen size */
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 1080px; height: 1920px;
+  transform: translate(-50%, -50%) scale(var(--k));
+  transform-origin: center center;
+  background: var(--ground);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: calc(4px * var(--u));
+  contain: paint;
+}
+.hf-scenes { position: absolute; inset: 0; }
+.hf-scene  { position: absolute; inset: 0; }
+
+/* ── persistent fx layers ──────────────────────────────────────────────── */
+.hf-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(128% 60% at 14% 2%,  color-mix(in srgb, var(--accent) 20%, transparent), transparent 64%),
+    radial-gradient(104% 50% at 92% 99%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 62%),
+    var(--ground);
+}
+.hf-grain {
+  position: absolute; inset: -20%; z-index: 90; pointer-events: none;
+  opacity: .034; mix-blend-mode: multiply;
+  /* divided by --k so grain stays the same size on screen at any preview scale */
+  background-repeat: repeat; background-size: calc(180px / var(--k));
+}
+.hf-vig {
+  position: absolute; inset: 0; z-index: 91; pointer-events: none;
+  background: radial-gradient(118% 88% at 50% 46%, transparent 62%,
+              color-mix(in srgb, var(--ink) 7%, transparent) 100%);
+}
+.hf-flash {
+  position: absolute; inset: 0; z-index: 95; pointer-events: none;
+  background: var(--bloom); opacity: 0;
+}
+.hf-edge {
+  position: absolute; inset: calc(14px * var(--u)); z-index: 94; pointer-events: none;
+  border: calc(2px * var(--u)) solid var(--accent); opacity: 0;
+  border-radius: calc(2px * var(--u));
+}
+
+/* ── hud (editorial chrome inside the frame) ───────────────────────────── */
+.hf-hud {
+  position: absolute; inset: calc(46px * var(--u)) calc(52px * var(--u));
+  z-index: 93; pointer-events: none;
+  font-family: var(--font-mono); font-size: calc(21px * var(--u));
+  letter-spacing: .18em; color: var(--ink-45); text-transform: uppercase;
+}
+.hf-hud > * { position: absolute; display: flex; align-items: center; gap: calc(12px * var(--u)); }
+.hf-hud .tl { top: 0; left: 0; }
+.hf-hud .tr { top: 0; right: 0; }
+.hf-hud .bl { bottom: 0; left: 0; }
+.hf-hud .dot {
+  width: calc(11px * var(--u)); height: calc(11px * var(--u));
+  background: var(--accent); border-radius: 50%;
+}
+
+/* ── type primitives ───────────────────────────────────────────────────── */
+.hf-split { display: block; }
+.hf-split--char .hf-word { display: inline-flex; }
+.hf-word { display: inline-block; }
+.u { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0 .02em; }
+.u-in { display: inline-block; will-change: transform, opacity, filter; }
+
+.mega, .big, .mid {
+  font-family: var(--font-display); font-weight: 900;
+  text-transform: uppercase; line-height: .84; letter-spacing: -.035em;
+  color: var(--ink); margin: 0;
+}
+.mega { font-size: calc(196px * var(--u)); }
+.big  { font-size: calc(150px * var(--u)); }
+.mid  { font-size: calc(78px  * var(--u)); }
+.label {
+  font-family: var(--font-mono); font-weight: 500; text-transform: uppercase;
+  font-size: calc(23px * var(--u)); letter-spacing: .26em; color: var(--ink-45);
+}
+
+/* ── the highlight ─────────────────────────────────────────────────────────
+   A marker block that covers WHOLE characters. The row carries the type size
+   and line-height 1, so its box spans the full glyph height; Inter's capitals
+   sit between .137em and .864em inside that box, so the block clears them by
+   an even .045em on all four sides. Never a half-covered cap, at any size.
+
+       const row   = el('div', 'hl-row mega');
+       const block = el('div', 'hl-block');
+       row.append(block, split('READY','word').node);
+       landWord(inner, block, gt, at, { hold: true });                        */
+.hl-row {
+  position: relative; display: block; width: max-content;
+  line-height: 1; margin-bottom: -.16em;
+}
+.hl-block {
+  position: absolute; z-index: 0;
+  left: -.055em; right: -.055em; top: .092em; height: .817em;
+  background: var(--accent);
+  transform-origin: 0% 50%; transform: scaleX(0);
+}
+.hl-row > .hf-split { position: relative; z-index: 1; }
+
+/* ── media ─────────────────────────────────────────────────────────────── */
+.hf-media { position: relative; overflow: hidden; background: var(--ground); }
+.hf-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; display: block; will-change: transform;
+}
+.hf-tint { position: absolute; inset: 0; }
+
+/* ── transport (outside the frame; hidden in render) ───────────────────── */
+.hf-chrome {
+  margin-top: 18px; width: min(560px, 92vw);
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em;
+  color: var(--ink-70); text-transform: uppercase;
+}
+.hf-chrome button {
+  font: inherit; letter-spacing: .14em; color: var(--ground);
+  background: var(--ink); border: 0; border-radius: 999px;
+  padding: 9px 16px; cursor: pointer; transition: transform .14s ease, background .14s;
+}
+.hf-chrome button:hover { transform: translateY(-1px); }
+.hf-chrome input[type=range] { flex: 1; accent-color: var(--ink); min-width: 0; }
+.hf-chrome .tc { font-variant-numeric: tabular-nums; min-width: 86px; text-align: right; }
+.hf-ratios { display: flex; gap: 6px; }
+.hf-ratios button { padding: 7px 10px; background: var(--ink-14); color: var(--ink); }
+.hf-ratios button[aria-pressed=true] { background: var(--accent); color: var(--ink); }
+.hf-chrome button:focus-visible,
+.hf-chrome input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+body.render .hf-chrome { display: none; }
+body.render { background: var(--ground); }
+body.render .hf-stage { border-radius: 0; left: 0; top: 0; transform: scale(var(--k)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hf-chrome button { transition: none; }
+}

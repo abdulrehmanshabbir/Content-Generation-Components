@@ -1,0 +1,10 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   STARTER · palette
+   Three colours. The engine derives every tint from them in CSS, and
+   VIS.sync() derives the canvas footage ramps from the same three in JS.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --ground: #eceae4;   /* paper   */
+  --ink:    #2a2a2e;   /* type    */
+  --accent: #b9d4c6;   /* accent  */
+}

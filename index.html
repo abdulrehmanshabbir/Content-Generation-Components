@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hyperframes — Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f1f2f4; --card:#fff; --ink:#1d232e; --soft:#6b7382; --line:#dfe3e9;
+    --font:'Inter Tight',Inter,-apple-system,'Segoe UI',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    color-scheme:light;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);
+       padding:clamp(28px,5vw,64px) clamp(16px,4vw,56px) 72px}
+  header{max-width:960px;margin:0 0 clamp(28px,4vw,48px)}
+  h1{font-size:clamp(30px,5vw,46px);font-weight:900;letter-spacing:-.03em;margin:0 0 10px}
+  .sub{color:var(--soft);font-size:16px;line-height:1.55;max-width:60ch;margin:0}
+  .kbd{font-family:var(--mono);font-size:12.5px;background:#e6e9ee;border:1px solid var(--line);
+       border-radius:6px;padding:2px 6px}
+  .grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));max-width:1200px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+        display:flex;flex-direction:column;min-width:0}
+  .thumb{position:relative;aspect-ratio:9/16;background:#e9ecf1;border-bottom:1px solid var(--line)}
+  .thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+  .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .name{font-size:19px;font-weight:900;letter-spacing:-.02em}
+  .blurb{color:var(--soft);font-size:13.5px;line-height:1.5;flex:1;margin:0}
+  .meta{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+  .row{display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap}
+  a.open{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+         text-decoration:none;color:#fff;background:var(--ink);padding:8px 13px;border-radius:999px}
+  a.open:hover{background:#38414f}
+  code.cmd{font-family:var(--mono);font-size:11.5px;color:var(--soft);overflow-wrap:anywhere}
+  footer{margin-top:44px;color:var(--soft);font-size:13.5px;line-height:1.6;max-width:70ch}
+  footer code{font-family:var(--mono);font-size:12.5px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Hyperframes</h1>
+  <p class="sub">
+    Frame-exact motion components. Every property of every layer is a pure function of the
+    frame index — so the browser preview, the scrubber and the exported MP4 all agree.
+    Each component is a self-contained folder; the engine is shared.
+    Open one and press <span class="kbd">space</span>.
+  </p>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<footer id="foot"></footer>
+
+<script src="components/manifest.js"></script>
+<script>
+  const grid = document.getElementById('grid');
+  (window.HF_COMPONENTS || []).forEach(c => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="thumb"><iframe loading="lazy" title="${c.title} preview"
+        src="components/${c.dir}/index.html?chrome=0"></iframe></div>
+      <div class="body">
+        <div class="name">${c.title}</div>
+        <p class="blurb">${c.blurb || ''}</p>
+        <div class="meta">${c.meta || ''}</div>
+        <div class="row">
+          <a class="open" href="components/${c.dir}/index.html">Open</a>
+          <code class="cmd">npm run render ${c.dir}</code>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById('foot').innerHTML =
+    `New component: <code>npm run new my-component "My Component"</code> — copies
+     <code>components/_starter</code>, rewrites its id and registers it here.
+     Previews are live, so a long list of components is a lot of canvases;
+     that is the only reason to keep this page short.`;
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   KINETIC TYPOGRAPHY · palette
+
+   Three colours, and nothing else. Every surface, every mark and every frame
+   of procedural footage is one of these or a tint of one — the engine derives
+   its tints from them in CSS, and VIS.sync() derives the canvas ramps from
+   the same three in JS. Change them here and the whole component re-skins.
+
+   Two rules keep the scheme honest:
+     · accent is never small type — too little contrast against ground at
+       label sizes, so labels are --ink-70
+     · ink never goes pure black
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --ground: #e8ecf2;   /* soft pale blue — the paper everything sits on */
+  --ink:    #212a38;   /* soft deep navy — all type                     */
+  --accent: #f0c978;   /* soft butter    — highlights, rules, fills     */
+}
+
+/* Component-specific styling goes below. This one needs none: it is built
+   entirely from the engine's primitives (.mega / .big / .mid / .label,
+   .hl-row + .hl-block, .hf-media). */

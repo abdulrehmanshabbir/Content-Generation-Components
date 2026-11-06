@@ -1,0 +1,6 @@
+node_modules/
+out/*
+!out/.gitkeep
+.DS_Store
+
+# previews/ is committed on purpose: it is the component index

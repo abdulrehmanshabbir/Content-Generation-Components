@@ -1,0 +1,42 @@
+{
+  "component": "shape-morph",
+  "fps": 30,
+  "beats": [
+    {
+      "at": 0.55,
+      "w": "A"
+    },
+    {
+      "at": 0.68,
+      "w": "BECOMES"
+    },
+    {
+      "at": 0.81,
+      "w": "B"
+    },
+    {
+      "at": 5.35,
+      "w": "ONE PATH"
+    },
+    {
+      "at": 5.51,
+      "w": "INTO ANOTHER"
+    },
+    {
+      "at": 7.55,
+      "w": "SAMPLE"
+    },
+    {
+      "at": 9.45,
+      "w": "ALIGN"
+    },
+    {
+      "at": 11.35,
+      "w": "LERP"
+    },
+    {
+      "at": 16.05,
+      "w": "SHAPE MORPHING"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "hyperframes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frame-exact motion components: author in the browser, export to MP4.",
+  "type": "module",
+  "scripts": {
+    "start":  "node tools/serve.mjs",
+    "serve":  "node tools/serve.mjs",
+    "render": "node tools/render.mjs",
+    "new":    "node tools/new-component.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.49.1"
+  }
+}
