@@ -21,8 +21,10 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require_ = createRequire(import.meta.url);
 function loadPlaywright() {
-  for (const id of ['playwright', 'playwright-core', '/opt/node-tools/node_modules/playwright']) {
-    try { return require_(id); } catch { /* next */ }
+  /* createRequire gives us the CJS resolver, so a global install on NODE_PATH
+     works as well as a local one from `npm install` */
+  for (const id of ['playwright', 'playwright-core']) {
+    try { return require_(id); } catch { /* try the next */ }
   }
   console.error('playwright not found — run:  npm install');
   process.exit(1);

@@ -37,7 +37,7 @@ await sub('README.md',   [['# Starter', `# ${title}`]]);
 /* register it in the gallery manifest */
 const mpath = path.join(ROOT, 'components', 'manifest.js');
 let m = await readFile(mpath, 'utf8');
-m = m.replace(/\n\];\s*$/, `,\n  {\n    dir: '${id}',\n    title: '${title}',\n    blurb: '',\n    meta: ''\n  }\n];\n`);
+m = m.replace(/\n\];\s*$/, `,\n  {\n    dir: '${id}',\n    title: '${title}',\n    blurb: '',\n    meta: '',\n    preview: ''\n  }\n];\n`);
 await writeFile(mpath, m);
 
 console.log(`✓ components/${id}`);

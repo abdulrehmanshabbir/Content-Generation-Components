@@ -120,13 +120,12 @@
         : `inset(0% ${(100 - e * 100).toFixed(2)}% 0% 0%)`;
       T(r.panel, { y: (1 - e) * u(28) - xe * u(70), s: lerp(1.06, 1, e), o: 1 - ex });
       r.clip.node.style.transform = `scale(${(1.1 - lt * 0.02).toFixed(4)})`;
-      r.clip.node.style.filter = `blur(${u(clip0(r.clip.blur))}px) saturate(1.2)`;
+      r.clip.node.style.filter = `blur(${u(r.clip.blur || 0)}px) saturate(1.2)`;
       r.clip.draw(gt);                       /* procedural clips draw per frame */
       const fp = prog(gt, 2.70, 0.5);
       T(r.foot, { y: (1 - E.expoOut(fp)) * u(24), o: fp * (1 - ex) });
     }
   };
-  const clip0 = b => (b || 0);
 
   C.scenes = [A, B];
   HF.define(C);

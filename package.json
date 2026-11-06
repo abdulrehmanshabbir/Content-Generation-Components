@@ -4,6 +4,11 @@
   "private": true,
   "description": "Frame-exact motion components: author in the browser, export to MP4.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdulrehmanshabbir/Content-Generation-Components.git"
+  },
+  "engines": { "node": ">=18" },
   "scripts": {
     "start":  "node tools/serve.mjs",
     "serve":  "node tools/serve.mjs",

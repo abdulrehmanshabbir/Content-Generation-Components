@@ -35,6 +35,10 @@
   a.open{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
          text-decoration:none;color:#fff;background:var(--ink);padding:8px 13px;border-radius:999px}
   a.open:hover{background:#38414f}
+  a.file{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+         text-decoration:none;color:var(--ink);background:#e6e9ee;border:1px solid var(--line);
+         padding:7px 12px;border-radius:999px}
+  a.file:hover{background:#dde2e9}
   code.cmd{font-family:var(--mono);font-size:11.5px;color:var(--soft);overflow-wrap:anywhere}
   footer{margin-top:44px;color:var(--soft);font-size:13.5px;line-height:1.6;max-width:70ch}
   footer code{font-family:var(--mono);font-size:12.5px}
@@ -70,6 +74,7 @@
         <div class="meta">${c.meta || ''}</div>
         <div class="row">
           <a class="open" href="components/${c.dir}/index.html">Open</a>
+          ${c.preview ? `<a class="file" href="${c.preview}">MP4</a>` : ''}
           <code class="cmd">npm run render ${c.dir}</code>
         </div>
       </div>`;

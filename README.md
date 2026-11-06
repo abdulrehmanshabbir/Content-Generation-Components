@@ -67,7 +67,8 @@ tools/
   render.mjs         Chromium + ffmpeg exporter
   serve.mjs          dependency-free static server
   new-component.mjs  scaffolds from _starter and registers it
-out/                 exports land here
+previews/            committed renders: one MP4, poster and beat map per component
+out/                 your own exports land here (git-ignored)
 ```
 
 Each component is **independent**: its own folder, its own page, its own

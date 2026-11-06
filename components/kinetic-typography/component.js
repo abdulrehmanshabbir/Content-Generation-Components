@@ -24,6 +24,10 @@
     hud: { tl: 'HYPERFRAMES', bl: 'TEMPLATE 01 · KINETIC TYPE', fadeAt: 10.3 },
     restFrame: 100,
 
+    /* per-ratio type scale. Five lines of mega plus the rule need more room
+       than a square gives at the engine default, so 1:1 gets its own value. */
+    units: { '1x1': 0.62 },
+
     fps: 30,
     duration: 12.6,
 
@@ -243,7 +247,7 @@
       const inset = lerp(26, 0, rv) + E.expoIn(ex) * 48;
       r.media.style.clipPath = `inset(${inset.toFixed(2)}% 0%)`;
       r.clip.node.style.transform = `scale(${(lerp(1.22, 1.03, lt / 2.5) + ex * 0.08).toFixed(4)})`;
-      r.clip.node.style.filter = `blur(${u(clip0(r.clip.blur))}px) saturate(1.25) contrast(1.05)`;
+      r.clip.node.style.filter = `blur(${u(r.clip.blur || 0)}px) saturate(1.25) contrast(1.05)`;
       r.clip.draw(gt); r.tex.draw(gt * 0.6);
 
       /* kicker */
@@ -279,7 +283,6 @@
       T(r.fidx, { o: prog(gt, 4.86, 0.3) });
     }
   };
-  const clip0 = b => (b || 0);
 
   /* ═══ SCENE 4 · THE GRID (clips + images + captions) ═════════════════ */
   const S4 = {
